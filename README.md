@@ -1,37 +1,61 @@
-# Session Vault 🔐
+# Session Vault
 
-Chrome 扩展，加密导出/导入浏览器**凭据数据**（Cookies + LocalStorage + SessionStorage）。
+Session Vault is a privacy-first Chrome extension for exporting and importing browser session data as password-encrypted local files.
 
-## 两种模式
+It can back up cookies, localStorage, sessionStorage, IndexedDB, and Cache Storage without using any server, analytics, telemetry, cloud sync, or third-party SDK.
 
-### 📍 当前网站模式
-针对**当前打开 tab 的域名**，导出/导入：
-- Cookies（含 HttpOnly，含同主域子域）
-- LocalStorage
-- SessionStorage
-- 三项默认全勾，可单选
+Privacy Policy: https://eidson-ciao.github.io/session-vault/PRIVACY.html
 
-适合：**团队共享 session**（共用测试账号、共享后台登录态）
+## What it does
 
-### 🌍 全浏览器模式
-- 导出：**所有域名的 cookies** + 已打开 tab 的 localStorage/sessionStorage
-- 导入：写入所有 cookies；localStorage 因为受同源限制，会**暂存**，等你访问对应网站时点扩展会提示恢复
+Session Vault helps you create encrypted browser session backups for:
 
-适合：**自己迁移到新电脑**
+- Moving your own logged-in sessions to a new device.
+- Backing up local browser session state before reinstalling Chrome.
+- Sharing a controlled test-account session with teammates.
+- Restoring cookies and web storage from a local vault file.
 
-## 安全设计
+Everything runs locally in your browser. The extension does not send your data anywhere.
 
-- 🔒 **AES-GCM 256** + PBKDF2-SHA256（25 万次迭代）
-- 📦 输出 `.json` 文件（结构是加密信封）
-- 🚫 完全本地，不联网
-- 🔑 密码错误 → 解密失败，无任何提示给攻击者
+## Modes
 
-### 文件格式（加密后）
+### Current Site Mode
+
+Export or import session data for the website in your active tab:
+
+- Cookies, including HttpOnly cookies where Chrome permits access.
+- localStorage.
+- sessionStorage.
+- IndexedDB and Cache Storage.
+
+This mode is useful for controlled team sharing of test accounts or internal admin sessions.
+
+### Whole Browser Mode
+
+Export or import broader browser session state:
+
+- All browser cookies.
+- localStorage and sessionStorage for currently open tabs.
+- IndexedDB and Cache Storage for currently open tabs.
+
+This mode is intended for personal migration to a new device. Do not share a whole-browser backup with anyone.
+
+## Security
+
+- AES-GCM 256-bit authenticated encryption.
+- PBKDF2-SHA256 key derivation with 250,000 iterations.
+- Random salt and IV for every export.
+- Passwords never leave your browser.
+- No server, backend, analytics, telemetry, tracking, or remote code.
+
+The encrypted `.json` file cannot be decrypted without the password. There is no backdoor, no key escrow, and no password recovery mechanism.
+
+## Encrypted File Format
 
 ```json
 {
   "v": 1,
-  "kind": "session-vault-site" | "session-vault-global",
+  "kind": "session-vault-site",
   "alg": "AES-GCM",
   "kdf": "PBKDF2-SHA256",
   "iterations": 250000,
@@ -41,59 +65,110 @@ Chrome 扩展，加密导出/导入浏览器**凭据数据**（Cookies + LocalSt
 }
 ```
 
-`ct` 解密后是明文 payload（JSON）。
+The `ct` field contains the encrypted JSON payload.
 
-## 安装
+## Installation
 
-1. 打开 `chrome://extensions/`
-2. 右上角开启「开发者模式」
-3. 点「加载已解压的扩展程序」→ 选 `session-vault/` 目录
+### Install as an unpacked extension
 
-## 使用
+1. Open `chrome://extensions/`.
+2. Enable `Developer mode`.
+3. Click `Load unpacked`.
+4. Select the `session-vault/` folder.
 
-### 团队共享 session
+## Usage
 
-1. 拥有账号的人，在登录状态下打开目标网站
-2. 点扩展 → 「当前网站」标签
-3. 输入强密码 → 点「导出加密备份」→ 得到 `.json` 文件
-4. 把 **文件** 和 **密码** 通过**不同渠道**发给队友
-5. 队友打开同一网站，点扩展 → 输密码 → 选文件 → 刷新页面
+### Export the current site
 
-### 迁移到新电脑
+1. Open the website you want to back up.
+2. Open the Session Vault popup.
+3. Select `Current Site`.
+4. Choose which data types to include.
+5. Enable password encryption and enter a strong password.
+6. Click `Export Encrypted Backup`.
+7. Store the exported `.json` file safely.
 
-**在旧电脑：**
-1. 把你常用的几个网站 tab 都打开（这样 localStorage 才能被抓到）
-2. 点扩展 → 「全浏览器」标签
-3. 输入强密码 → 「导出全浏览器备份」
-4. 把 `.json` 文件传到新电脑
+### Import the current site
 
-**在新电脑：**
-1. 装好这个扩展
-2. 点扩展 → 「全浏览器」标签 → 输密码 → 选文件
-3. cookies 立即恢复（你可能已经被登录了）
-4. 访问对应网站时，扩展会显示「点击此处恢复 localStorage」横幅
+1. Open the target website.
+2. Open the Session Vault popup.
+3. Select `Current Site`.
+4. Enter the password used during export.
+5. Choose the backup file.
+6. Refresh the website after import completes.
 
-## 限制说明
+### Export the whole browser
 
-- **LocalStorage 跨设备**：浏览器不允许扩展给"没访问过的源"写 localStorage，所以全浏览器模式只能抓**已打开 tab** 的 localStorage，且导入时需要"暂存 + 访问触发"两步。
-- **`SameSite=Strict` cookie**：少数会被浏览器拒，少数网站可能失效。
-- **Cookie 过期**：备份久了的 vault 可能因为 expiry 已经到了而无效。
+1. Open tabs for the websites whose storage you want to include.
+2. Open the Session Vault popup.
+3. Select `Whole Browser`.
+4. Enable password encryption and enter a strong password.
+5. Click `Export Whole-Browser Backup`.
+6. Keep the resulting `.json` file private.
 
-## 安全注意 ⚠️
+### Import the whole browser
 
-- 谁拿到 `.json` + 密码 = 谁能登入这些账号（已过 2FA）
-- 全浏览器备份**绝对不要分享**给任何人
-- 团队共享备份用**强密码**（16+ 位），文件和密码**走不同渠道**
-- 不要导入来路不明的 `.json` 文件
+1. Install Session Vault on the target Chrome profile.
+2. Open the Session Vault popup.
+3. Select `Whole Browser`.
+4. Enter the password used during export.
+5. Choose the backup file.
+6. Cookies are restored immediately.
+7. Storage for individual origins may be staged until you visit each site, due to browser same-origin restrictions.
 
-## 文件结构
+## Important Safety Notes
 
-```
+- Anyone with both the backup file and the password can use the included sessions.
+- Treat every vault file like a password-manager export.
+- Use a strong password, preferably 16+ characters.
+- If sharing a current-site backup with a teammate, send the file and password through separate channels.
+- Never import vault files from untrusted sources.
+- Whole-browser backups are for personal migration only and should not be shared.
+
+## Limitations
+
+- localStorage, sessionStorage, IndexedDB, and Cache Storage are origin-bound by browser design.
+- Whole-browser storage export only includes origins that are currently open in tabs.
+- Whole-browser storage import may require visiting each site before staged storage can be restored.
+- Some cookies may be rejected by Chrome if their attributes are no longer valid.
+- Expired cookies in old backups may no longer work.
+- Some websites may invalidate sessions after device, IP, browser, or security checks change.
+
+## Permissions
+
+Session Vault requests the following Chrome permissions:
+
+- `cookies`: read and write cookies during export and import.
+- `storage`: store pending import data locally inside the extension.
+- `activeTab`: detect the current website in Current Site mode.
+- `scripting`: read and write web storage in the active tab.
+- `tabs`: enumerate open tabs in Whole Browser mode.
+- `downloads`: save encrypted backup files locally.
+- `<all_urls>` host access: support user-initiated backup and restore for any website.
+
+All actions are explicitly initiated by the user from the popup.
+
+## Verifying Local-Only Behavior
+
+You can audit the source code to confirm that Session Vault does not transmit data externally.
+
+The extension contains no remote analytics, telemetry, tracking SDK, backend endpoint, `fetch()`, `XMLHttpRequest`, or `WebSocket` calls.
+
+## Project Structure
+
+```text
 session-vault/
-├── manifest.json     # MV3 配置
-├── popup.html        # UI（两个 tab）
-├── popup.js          # 站点 + 全局两套逻辑
-├── crypto.js         # AES-GCM 加解密
-├── background.js     # service worker（占位）
-└── icons/            # 图标（待补）
+├── manifest.json
+├── popup.html
+├── popup.js
+├── crypto.js
+├── storage-deep.js
+├── background.js
+├── PRIVACY.md
+├── PRIVACY.html
+└── icons/
 ```
+
+## License
+
+No license has been selected yet. All rights are reserved unless a license is added later.
