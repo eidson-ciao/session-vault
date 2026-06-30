@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Privacy Policy | Session Vault</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f7f7f4;
+      --panel: #ffffff;
+      --fg: #1f252b;
+      --muted: #5d6873;
+      --accent: #1769aa;
+      --border: #d8dedf;
+      --code-bg: #eef3f3;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #17191b;
+        --panel: #202326;
+        --fg: #eef1f2;
+        --muted: #a8b1b9;
+        --accent: #67b7ff;
+        --border: #373d42;
+        --code-bg: #2a3034;
+      }
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--fg);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    main {
+      width: min(920px, calc(100% - 32px));
+      margin: 40px auto;
+      padding: 40px;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+    }
+
+    h1,
+    h2 {
+      line-height: 1.25;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 34px;
+    }
+
+    h2 {
+      margin-top: 32px;
+      font-size: 22px;
+    }
+
+    p,
+    ul {
+      margin: 12px 0;
+    }
+
+    .updated,
+    .muted {
+      color: var(--muted);
+    }
+
+    .summary {
+      margin: 24px 0;
+      padding: 18px 20px;
+      background: var(--code-bg);
+      border-left: 4px solid var(--accent);
+      border-radius: 6px;
+    }
+
+    table {
+      width: 100%;
+      margin: 18px 0;
+      border-collapse: collapse;
+      font-size: 15px;
+    }
+
+    th,
+    td {
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+      border: 1px solid var(--border);
+    }
+
+    th {
+      background: var(--code-bg);
+    }
+
+    code {
+      padding: 2px 5px;
+      background: var(--code-bg);
+      border-radius: 4px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 0.92em;
+    }
+
+    a {
+      color: var(--accent);
+    }
+
+    @media (max-width: 640px) {
+      main {
+        width: 100%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 24px 18px;
+        border: 0;
+        border-radius: 0;
+      }
+
+      h1 {
+        font-size: 28px;
+      }
+
+      table,
+      thead,
+      tbody,
+      tr,
+      th,
+      td {
+        display: block;
+      }
+
+      tr {
+        border: 1px solid var(--border);
+        margin-bottom: 12px;
+      }
+
+      th,
+      td {
+        border: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Privacy Policy for Session Vault</h1>
+    <p class="updated"><strong>Last updated:</strong> June 30, 2026</p>
+
+    <section class="summary" aria-label="Summary">
+      <h2>TL;DR</h2>
+      <p>Session Vault is a <strong>100% local-only</strong> Chrome extension. We do <strong>not</strong> collect, transmit, store, or sell any of your data. Nothing leaves your device.</p>
+    </section>
+
+    <h2>Who we are</h2>
+    <p>Session Vault is an open-source Chrome extension that lets users export and import their browser session data, including cookies, localStorage, and sessionStorage, as <strong>password-encrypted local files</strong> using AES-GCM 256-bit encryption with PBKDF2-SHA256.</p>
+    <p>This Privacy Policy explains what data the extension accesses, how it is processed, and what we, the developer, do and do not do with it.</p>
+
+    <h2>Data we access</h2>
+    <p>To perform its function, Session Vault accesses the following data on your local device:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Data type</th>
+          <th>Why it is needed</th>
+          <th>Where it goes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cookies</strong> for the current site or all sites</td>
+          <td>To export and import authentication sessions</td>
+          <td>Encrypted into a local file on your device</td>
+        </tr>
+        <tr>
+          <td><strong>localStorage / sessionStorage</strong></td>
+          <td>To export and import full browser session state</td>
+          <td>Encrypted into a local file on your device</td>
+        </tr>
+        <tr>
+          <td><strong>Active tab URL / tab list</strong></td>
+          <td>To detect which domain to export from, or which tabs are open for "All sites" mode</td>
+          <td>Used in memory only, never stored or sent</td>
+        </tr>
+        <tr>
+          <td><strong>Extension storage</strong> (<code>chrome.storage</code>)</td>
+          <td>To temporarily hold pending localStorage entries until you revisit the site, only for "All sites" import</td>
+          <td>Local browser storage, on your device only</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Data we do NOT collect</h2>
+    <p>We do <strong>not</strong>:</p>
+    <ul>
+      <li>Send any data to any server. There is no analytics, telemetry, or error reporting.</li>
+      <li>Use third-party services, SDKs, or trackers.</li>
+      <li>Read, log, or upload your cookies, passwords, or browsing history.</li>
+      <li>Have access to your encryption password. It never leaves your browser.</li>
+      <li>Sell, share, or trade any data with anyone.</li>
+      <li>Use your data for advertising, profiling, or AI training.</li>
+    </ul>
+    <p>The extension has <strong>no remote server</strong>. There is no backend.</p>
+
+    <h2>How encryption works</h2>
+    <p>When you export, your data is encrypted entirely inside your browser using:</p>
+    <ul>
+      <li><strong>AES-GCM 256-bit</strong> authenticated encryption</li>
+      <li><strong>PBKDF2-SHA256</strong> key derivation with 250,000 iterations</li>
+      <li>A random salt and IV per export</li>
+    </ul>
+    <p>The resulting <code>.json</code> file is meaningless without your password. We cannot decrypt it. There is no key escrow, no backdoor, and no recovery mechanism. If you lose your password, your data is unrecoverable.</p>
+
+    <h2>Permissions explained</h2>
+    <p>Chrome requires us to request these permissions:</p>
+    <ul>
+      <li><code>cookies</code>: read and write cookies for export and import.</li>
+      <li><code>storage</code>: save pending import data locally inside the extension.</li>
+      <li><code>activeTab</code>: detect which website you are currently on in current-site mode.</li>
+      <li><code>scripting</code>: inject a small script into your active tab to read and write localStorage and sessionStorage.</li>
+      <li><code>tabs</code>: enumerate open tabs for "All sites" mode.</li>
+      <li><code>downloads</code>: save the encrypted <code>.json</code> file to your Downloads folder.</li>
+      <li><code>host_permissions: &lt;all_urls&gt;</code>: required because cookies and storage may belong to any domain you choose to back up. We only act when you explicitly press Export or Import in the popup.</li>
+    </ul>
+    <p>We never silently scan, read, or transmit data from any website. All actions are user-initiated.</p>
+
+    <h2>Your responsibility</h2>
+    <p>Because data never leaves your device, you are responsible for:</p>
+    <ul>
+      <li>Protecting the exported <code>.json</code> file. Treat it like a password vault file.</li>
+      <li>Choosing a strong password. 16+ characters is recommended.</li>
+      <li>Sharing the file and password through different channels if used for team session sharing.</li>
+      <li>Not importing untrusted <code>.json</code> files from unknown sources.</li>
+    </ul>
+    <p>Anyone who obtains both your <code>.json</code> file and your password will be able to log in as you on the included sites, including after 2FA has already been completed.</p>
+
+    <h2>Children's privacy</h2>
+    <p>Session Vault is not directed at children under 13 and does not knowingly collect data from anyone.</p>
+
+    <h2>Changes to this policy</h2>
+    <p>If this policy ever changes, the updated version will be published in the same location with a new "Last updated" date. Since the extension does not have any remote service, changes to this policy will not retroactively affect any data. There is no data to affect.</p>
+
+    <h2>Contact</h2>
+    <p>For questions about this Privacy Policy, please open an issue in the public GitHub repository for Session Vault or use the support contact listed on the Chrome Web Store listing.</p>
+
+    <h2>Verifiability</h2>
+    <p>Session Vault is open source. The public repository that serves this page contains the full source code for the extension, including <code>manifest.json</code>, <code>popup.js</code>, <code>background.js</code>, <code>crypto.js</code>, and <code>storage-deep.js</code>.</p>
+    <p>The source code contains zero <code>fetch()</code>, <code>XMLHttpRequest</code>, or <code>WebSocket</code> calls to any remote endpoint.</p>
+  </main>
+</body>
+</html>
